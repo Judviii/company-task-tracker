@@ -60,6 +60,7 @@ class Worker(AbstractUser):
         Position,
         on_delete=models.CASCADE,
         related_name="positions",
+        null=True,
     )
 
     class Meta:
