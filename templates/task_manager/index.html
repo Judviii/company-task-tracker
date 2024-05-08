@@ -1,13 +1,30 @@
 {% extends "base.html" %}
 
 {% block content %}
+  {% if user.is_authenticated %}
+    Welcome back {{ user.get_username }}, Tasks w8 for
+    <li class="list-group-item">
+      User: <a href="{% url 'task_manager:worker-detail' pk=user.pk %}">
+      {{ user.get_username }}
+    </a>
+    </li>
+    <li>
+      <a>Position {{ user.position }}</a>
+    </li>
+    <li>
+      <a href="{% url 'task_manager:worker-detail' pk=user.pk %}"> See your task</a>
+    </li>
+  {% else %}
     <h1>Task Tracker Service</h1>
     <p>Welcome to Task Tracker Service, specified for IT company</p>
     <h2>Task w8 to be completed</h2>
     <ul>
-        <li><strong>Task:</strong> {{ num_tasks }}</li>
-        <li><strong>Not comp Task:</strong> {{ not_completed_tasks_count }}</li>
+      <li><strong>Task:</strong> {{ num_tasks }}</li>
+      <li><strong>Not comp Task:</strong> {{ not_completed_tasks_count }}</li>
     </ul>
+    Please login our service to start work
+    <li><a href="{% url 'login' %}">Login</a></li>
+  {% endif %}
   
 
 {% endblock %}
