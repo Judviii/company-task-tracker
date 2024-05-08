@@ -9,7 +9,7 @@ class TaskType(models.Model):
     name = models.CharField(max_length=255, unique=True)
 
     def __str__(self):
-        return {self.name}
+        return self.name
 
 
 class Task(models.Model):
@@ -52,7 +52,7 @@ class Position(models.Model):
     )
 
     def __str__(self):
-        return {self.name}
+        return self.name
 
 
 class Worker(AbstractUser):
