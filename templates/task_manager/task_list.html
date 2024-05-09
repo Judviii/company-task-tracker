@@ -24,7 +24,7 @@
       {% for task in task_list %}
         <tr>
           <td>
-            {{ task.name }}
+            <a href="{% url 'task-manager:task-detail' pk=task.id %}">{{ task.name }}</a>
           </td>
           <td>
             {{ task.description }}
@@ -44,7 +44,9 @@
           <td>
             <ul>
               {% for worker in task.assignees.all %}
-                <li>{{ worker.first_name }} {{ worker.last_name }} {{ worker.position }}</li>
+                <li><a href="{% url 'task-manager:worker-detail' pk=worker.id %}">
+                  {{ worker.first_name }} {{ worker.last_name }} {{ worker.position }}
+                </a></li>
               {% endfor %}
             </ul>
           </td>

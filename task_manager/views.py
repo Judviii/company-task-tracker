@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LoginView
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -25,8 +26,9 @@ def index(request):
     )
 
 
-class WorkerListView(generic.ListView):
+class WorkerListView(LoginRequiredMixin, generic.ListView):
     model = Worker
+    paginate_by = 5
 
     def get_queryset(self):
         queryset = Worker.objects.order_by("username")
@@ -36,23 +38,26 @@ class WorkerListView(generic.ListView):
         return queryset
 
 
-class WorkerDetailView(generic.DetailView):
+class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
     model = Worker
     queryset = Worker.objects.all()
 
 
-class WorkerCreateView(generic.CreateView):
+class WorkerCreateView(LoginRequiredMixin, generic.CreateView):
     model = Worker
+    fields = "__all__"
+    success_url = reverse_lazy("task-manager:worker-list")
 
 
-class WorkerUpdateView(generic.UpdateView):
+class WorkerUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Worker
-    success_url = reverse_lazy("")
+    fields = "__all__"
+    success_url = reverse_lazy("task-manager:worker-list")
 
 
-class WorkerDeleteView(generic.DeleteView):
+class WorkerDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Worker
-    success_url = reverse_lazy("task-manager:index")
+    success_url = reverse_lazy("task-manager:worker-list")
 
 
 class TaskListView(LoginRequiredMixin, generic.ListView):
@@ -77,3 +82,15 @@ class TaskUpdateView(LoginRequiredMixin, generic.UpdateView):
 class TaskDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Task
     success_url = reverse_lazy("task-manager:task-list")
+
+
+class TaskDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Task
+
+
+class TaskTypeListView(generic.ListView):
+    model = TaskType
+    context_object_name = "task_type_list"
+    template_name = "task_manager/task_type_list.html"
+    paginate_by = 5
+

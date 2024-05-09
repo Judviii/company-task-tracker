@@ -24,7 +24,7 @@
       <p><strong>Type:</strong> {{ task.task_type }}</p>
       <p><strong>Assignees:</strong> 
         {% for assignee in task.assignees.all %}
-          {{ assignee.username }}{% if not forloop.last %}, {% endif %}
+          {{ assignee.username }}/
         {% endfor %}
       </p>
     {% empty %}
