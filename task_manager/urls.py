@@ -13,7 +13,6 @@ from .views import (
     TaskCreateView,
     TaskDetailView,
     TaskTypeListView,
-    CustomLoginView,
 )
 
 urlpatterns = [
