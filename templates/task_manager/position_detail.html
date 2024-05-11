@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>
+    Task type: {{ position.name }}
+  </h1>
+  <a href="{% url 'task-manager:position-list' %}" class="btn btn-secondary">
+      Go back
+    </a>
+  <a href="{% url 'task-manager:position-update' pk=position.id %}" class="btn btn-secondary">
+      Update
+    </a>
+  <a href="{% url 'task-manager:position-delete' pk=position.id %}" class="btn btn-secondary">
+      delete
+    </a>
+{% endblock %}
