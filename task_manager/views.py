@@ -91,6 +91,52 @@ class TaskDetailView(LoginRequiredMixin, generic.DetailView):
 class TaskTypeListView(generic.ListView):
     model = TaskType
     context_object_name = "task_type_list"
-    template_name = "task_manager/task_type_list.html"
     paginate_by = 5
 
+
+class TaskTypeCreateView(LoginRequiredMixin, generic.CreateView):
+    model = TaskType
+    fields = "__all__"
+    success_url = reverse_lazy("task-manager:task-type-list")
+
+
+class TaskTypeDetailView(LoginRequiredMixin, generic.DetailView):
+    model = TaskType
+
+
+class TaskTypeUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = TaskType
+    fields = "__all__"
+    success_url = reverse_lazy("task-manager:task-type-list")
+
+
+class TaskTypeDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = TaskType
+    success_url = reverse_lazy("task-manager:task-type-list")
+
+
+class PositionListView(LoginRequiredMixin, generic.ListView):
+    model = Position
+    context_object_name = "position_list"
+    paginate_by = 5
+
+
+class PositionCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Position
+    fields = "__all__"
+    success_url = reverse_lazy("")
+
+
+class PositionDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Position
+
+
+class PositionUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Position
+    fields = "__all__"
+    success_url = reverse_lazy("")
+
+
+class PositionDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Position
+    success_url = reverse_lazy("")
