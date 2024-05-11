@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>
+    Task type: {{ tasktype.name }}
+  </h1>
+  <a href="{% url 'task-manager:task-type-list' %}" class="btn btn-secondary">
+      Go back
+    </a>
+  <a href="{% url 'task-manager:task-type-update' pk=tasktype.id %}" class="btn btn-secondary">
+      Update
+    </a>
+  <a href="{% url 'task-manager:task-type-delete' pk=tasktype.id %}" class="btn btn-secondary">
+      delete
+    </a>
+{% endblock %}
