@@ -17,26 +17,22 @@
         <th>First name</th>
         <th>Last name</th>
         <th>Position</th>
-        <th>Update</th>
-        <th>Delete</th>
+        <th>Task in progres</th>
       </tr>
       {% for worker in worker_list %}
         <tr>
           <td><a href="{{ worker.get_absolute_url }}" >{{ worker.username }} {% if user == worker %} (Me){% endif %}</a>
+            <a href="{% url 'task-manager:worker-update' pk=worker.id %}">
+              🔄
+            </a>
+            <a href="{% url 'task-manager:worker-delete' pk=worker.id %}">
+              🚫
+            </a>
           </td>
           <td>{{ worker.first_name }}</td>
           <td>{{ worker.last_name }}</td>
           <td>{{ worker.position }}</td>
-        <td>
-            <a href="{% url 'task-manager:worker-update' pk=worker.id %}" class="btn btn-primary link-to-page">
-              update
-            </a>
-          </td>
-          <td>
-            <a href="{% url 'task-manager:worker-delete' pk=worker.id %}" class="btn btn-primary link-to-page">
-              delete
-            </a>
-          </td>
+          <td>{{ completed_tasks_counts }}/{{ in_completed_tasks_counts }}</td>
         </tr>
       {% endfor %}
 

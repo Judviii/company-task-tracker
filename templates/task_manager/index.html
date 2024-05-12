@@ -12,27 +12,7 @@
   <p><strong>First name:</strong> {{ user.first_name }}</p>
   <p><strong>Last name:</strong> {{ user.last_name }}</p>
   <p><strong>Position:</strong> {{ user.position }}</p>
-
-  <div class="ml-3">
-    <h4>Tasks</h4>
-
-    {% for task in user.workers.all %}
-      <hr>
-      <p><strong>Name:</strong> {{ task.name }}</p>
-      <p><strong>Description:</strong> {{ task.description }}</p>
-      <p><strong>Deadline:</strong> {{ task.deadline }}</p>
-      <p><strong>Priority:</strong> {{ task.get_priority_display }}</p>
-      <p><strong>Completed:</strong> {% if task.is_completed %}Yes{% else %}No{% endif %}</p>
-      <p><strong>Type:</strong> {{ task.task_type }}</p>
-      <p><strong>Assignees:</strong> 
-        {% for assignee in task.assignees.all %}
-          {{ assignee.username }}/
-        {% endfor %}
-      </p>
-    {% empty %}
-      <p>No tasks assigned!</p>
-    {% endfor %}
-  </div>
+  
 <li>
   <a href="{% url 'task_manager:worker-detail' pk=user.pk %}"> See your task</a>
 </li>

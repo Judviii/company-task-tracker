@@ -1,3 +1,33 @@
 body {
     margin-top: 20px;
 }
+
+ul {
+    padding-left: 0;
+    list-style-type: none;
+}
+
+li {
+    margin-left: 0;
+}
+
+.priority-cell {
+  font-weight: bold;
+}
+
+.priority-urgent {
+  color: red;
+}
+
+.priority-important {
+  color: orange;
+}
+
+.priority-normal {
+  color: blue;
+}
+
+.priority-low {
+  color: green;
+}
+

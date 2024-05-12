@@ -7,7 +7,7 @@
       Create
     </a>
   </h1>
-  
+
   {% include "task_manager/search_form.html" %}
 
   {% if task_type_list %}
@@ -15,7 +15,13 @@
       {% for task_type in task_type_list %}
         <li><a href="{% url 'task-manager:task-type-detail' pk=task_type.id %}">
           {{ task_type.name }}</a>
-          </li>
+          <a href="{% url 'task-manager:task-type-update' pk=task_type.id %}">
+            🔄
+          </a>
+          <a href="{% url 'task-manager:task-type-delete' pk=task_type.id %}">
+            🚫
+          </a>
+        </li>
       {% endfor %}
     </ul>
   {% else %}

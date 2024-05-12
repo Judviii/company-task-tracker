@@ -7,9 +7,9 @@
       Create
     </a>
   </h1>
-  
+
   {% include "task_manager/search_form.html" %}
-  
+
   {% if task_list %}
     <table class="table">
       <tr>
@@ -20,8 +20,8 @@
         <th>Priority</th>
         <th>Type</th>
         <th>Assignees</th>
-        <th>Update</th>
-        <th>Delete</th>
+        <th></th>
+        <th></th>
       </tr>
 
       {% for task in task_list %}
@@ -36,9 +36,13 @@
             {{ task.deadline }}
           </td>
           <td>
-            {{ task.is_completed }}
+            {% if task.is_completed %}
+              Completed
+            {% else %}
+              In process
+            {% endif %}
           </td>
-          <td>
+          <td class="priority-{{ task.priority }}">
             {{ task.priority }}
           </td>
           <td>
@@ -48,20 +52,27 @@
             <ul>
               {% for worker in task.assignees.all %}
                 <li><a href="{% url 'task-manager:worker-detail' pk=worker.id %}">
-                  {{ worker.first_name }} {{ worker.last_name }} {{ worker.position }}
-                </a></li>
+                  {{ worker.first_name }} {{ worker.last_name }}
+                </a>{% if user == worker %} (Me){% endif %}</li>
               {% endfor %}
             </ul>
           </td>
           <td>
-            <a href="{% url 'task-manager:task-update' pk=task.id %}" class="btn btn-primary link-to-page">
-              update
-            </a>
+            {% if user in task.assignees.all %}
+              <a href="{% url 'task_manager:task-toggle-assign'  pk=task.id%}" class="btn btn-danger link-to-page">
+                Delete me from this task
+              </a>
+            {% else %}
+              <a href="{% url 'task_manager:task-toggle-assign'  pk=task.id%}" class="btn btn-success link-to-page">
+                Assign me to this task
+              </a>
+            {% endif %}
           </td>
           <td>
-            <a href="{% url 'task-manager:task-delete' pk=task.id %}" class="btn btn-primary link-to-page">
-              delete
-            </a>
+            <a href="{% url 'task-manager:task-update' pk=task.id %}">🔄</a>
+          </td>
+          <td>
+            <a href="{% url 'task-manager:task-delete' pk=task.id %}">🚫</a>
           </td>
         </tr>
       {% endfor %}

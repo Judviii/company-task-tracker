@@ -5,30 +5,85 @@
     Username: {{ worker.username }}
   </h1>
   <a href="{% url 'task-manager:index' %}" class="btn btn-secondary">
-      Go back
-    </a>
+    Go back
+  </a>
   <p><strong>First name:</strong> {{ worker.first_name }}</p>
   <p><strong>Last name:</strong> {{ worker.last_name }}</p>
   <p><strong>Position:</strong> {{ worker.position }}</p>
+  <h2>Task status</h2>
+  <p>Completed task: {{ completed_tasks_count }}</p>
+  <p>In process task: {{ in_process_tasks_count }}</p>
+  <h4>Tasks</h4>
 
-  <div class="ml-3">
-    <h4>Tasks</h4>
+  {% if worker.workers.all %}
+    <table class="table">
+      <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Deadline</th>
+        <th>Status</th>
+        <th>Priority</th>
+        <th>Type</th>
+        <th>Assignees</th>
+        <th></th>
+        <th></th>
+      </tr>
 
-    {% for task in worker.workers.all %}
-      <hr>
-      <p><strong>Name:</strong> {{ task.name }}</p>
-      <p><strong>Description:</strong> {{ task.description }}</p>
-      <p><strong>Deadline:</strong> {{ task.deadline }}</p>
-      <p><strong>Priority:</strong> {{ task.get_priority_display }}</p>
-      <p><strong>Completed:</strong> {% if task.is_completed %}Yes{% else %}No{% endif %}</p>
-      <p><strong>Type:</strong> {{ task.task_type }}</p>
-      <p><strong>Assignees:</strong> 
-        {% for assignee in task.assignees.all %}
-          {{ assignee.username }}/
-        {% endfor %}
-      </p>
-    {% empty %}
-      <p>No tasks assigned!</p>
-    {% endfor %}
-  </div>
+      {% for task in worker.workers.all %}
+        <tr>
+          <td>
+            <a href="{% url 'task-manager:task-detail' pk=task.id %}">{{ task.name }}</a>
+          </td>
+          <td>
+            {{ task.description }}
+          </td>
+          <td>
+            {{ task.deadline }}
+          </td>
+          <td>
+            {% if task.is_completed %}
+              Completed
+            {% else %}
+              In process
+            {% endif %}
+          </td>
+          <td class="priority-{{ task.priority }}">
+            {{ task.priority }}
+          </td>
+          <td>
+            {{ task.task_type.name }}
+          </td>
+          <td>
+            <ul>
+              {% for worker in task.assignees.all %}
+                <li><a href="{% url 'task-manager:worker-detail' pk=worker.id %}">
+                  {{ worker.first_name }} {{ worker.last_name }}
+                </a>{% if user == worker %} (Me){% endif %}</li>
+              {% endfor %}
+            </ul>
+          </td>
+          <td>
+            {% if user in task.assignees.all %}
+              <a href="{% url 'task_manager:task-toggle-assign'  pk=task.id %}" class="btn btn-danger link-to-page">
+                Delete me from this task
+              </a>
+            {% else %}
+              <a href="{% url 'task_manager:task-toggle-assign'  pk=task.id %}" class="btn btn-success link-to-page">
+                Assign me to this task
+              </a>
+            {% endif %}
+          </td>
+          <td>
+            <a href="{% url 'task-manager:task-update' pk=task.id %}">🔄</a>
+          </td>
+          <td>
+            <a href="{% url 'task-manager:task-delete' pk=task.id %}">🚫</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+
+  {% else %}
+    <p>There are no task in the service.</p>
+  {% endif %}
 {% endblock %}
