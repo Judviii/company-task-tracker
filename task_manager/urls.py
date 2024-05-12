@@ -11,6 +11,7 @@ from .views import (
     TaskDeleteView,
     TaskCreateView,
     TaskDetailView,
+    toggle_assign_to_task,
     TaskTypeListView,
     TaskTypeCreateView,
     TaskTypeDetailView,
@@ -51,6 +52,11 @@ urlpatterns = [
     ),
     path(
         "tasks/<int:pk>/detail", TaskDetailView.as_view(), name="task-detail"
+    ),
+    path(
+        "tasks/<int:pk>/toggle-assign/",
+        toggle_assign_to_task,
+        name="task-toggle-assign"
     ),
     path("task-type/", TaskTypeListView.as_view(), name="task-type-list"),
     path(
@@ -93,7 +99,7 @@ urlpatterns = [
         "position/<int:pk>/delete/",
         PositionDeleteView.as_view(),
         name="position-delete"
-    )
+    ),
 ]
 
 app_name = "task_manager"

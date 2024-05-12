@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -56,6 +56,16 @@ class WorkerListView(LoginRequiredMixin, generic.ListView):
 class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
     model = Worker
     queryset = Worker.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        worker = self.get_object()
+        completed_tasks_count = worker.workers.filter(is_completed=True).count()
+        in_process_tasks_count = worker.workers.filter(
+            is_completed=False).count()
+        context['completed_tasks_count'] = completed_tasks_count
+        context['in_process_tasks_count'] = in_process_tasks_count
+        return context
 
 
 class WorkerCreateView(LoginRequiredMixin, generic.CreateView):
@@ -193,3 +203,16 @@ class PositionUpdateView(LoginRequiredMixin, generic.UpdateView):
 class PositionDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Position
     success_url = reverse_lazy("task-manager:position-list")
+
+
+@login_required
+def toggle_assign_to_task(request, pk):
+    task = get_object_or_404(Task, id=pk)
+    worker = get_object_or_404(Worker, id=request.user.id)
+    if task.assignees.filter(id=worker.id).exists():
+        task.assignees.remove(worker)
+    else:
+        task.assignees.add(worker)
+    return HttpResponseRedirect(
+        reverse_lazy("task_manager:task-list")
+    )
