@@ -8,6 +8,8 @@
     </a>
   </h1>
 
+  {% include "task_manager/search_form.html" %}
+  
   {% if position_list %}
     <ul>
       {% for position in position_list %}

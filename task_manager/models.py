@@ -1,7 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, Permission
 from django.urls import reverse
-
 from company_task_tracker import settings
 
 
@@ -66,6 +65,31 @@ class Worker(AbstractUser):
     class Meta:
         verbose_name = "worker"
         verbose_name_plural = "workers"
+
+    def get_absolute_url(self):
+        return reverse("task-manager:worker-detail", kwargs={"pk": self.pk})
+
+    def get_default_permissions(self) -> list[Permission]:
+        default_permissions = [
+            Permission.objects.get(codename="add_task"),
+            Permission.objects.get(codename="change_task"),
+            Permission.objects.get(codename="delete_task"),
+            Permission.objects.get(codename="view_task"),
+            Permission.objects.get(codename="add_position"),
+            Permission.objects.get(codename="change_position"),
+            Permission.objects.get(codename="delete_position"),
+            Permission.objects.get(codename="view_position"),
+            Permission.objects.get(codename="add_tasktype"),
+            Permission.objects.get(codename="change_tasktype"),
+            Permission.objects.get(codename="delete_tasktype"),
+            Permission.objects.get(codename="view_tasktype"),
+            Permission.objects.get(codename="add_worker"),
+            Permission.objects.get(codename="change_worker"),
+            Permission.objects.get(codename="delete_worker"),
+            Permission.objects.get(codename="view_worker"),
+        ]
+
+        return default_permissions
 
     def __str__(self):
         return (

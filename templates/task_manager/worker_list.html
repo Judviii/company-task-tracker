@@ -7,6 +7,8 @@
       Create
     </a>
   </h1>
+  
+  {% include "task_manager/search_form.html" %}
 
   {% if worker_list %}
     <table class="table">
@@ -20,7 +22,7 @@
       </tr>
       {% for worker in worker_list %}
         <tr>
-          <td><a href="{{ worker.id }}" >{{ worker.username }} {% if user == worker %} (Me){% endif %}</a>
+          <td><a href="{{ worker.get_absolute_url }}" >{{ worker.username }} {% if user == worker %} (Me){% endif %}</a>
           </td>
           <td>{{ worker.first_name }}</td>
           <td>{{ worker.last_name }}</td>
