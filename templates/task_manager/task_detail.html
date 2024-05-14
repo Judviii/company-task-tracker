@@ -1,24 +1,30 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>
-    {{ task.name }}
-  </h1>
-  <a href="{% url 'task-manager:task-list' %}" class="btn btn-secondary">
-    Go back
-  </a>
-  <p>{{ task.description }}</p>
-  <p><strong>Deadline:</strong> {{ task.deadline }}</p>
-  <p><strong>Priority:</strong> {{ task.priority }}</p>
-  <p><strong>Completed:</strong> {% if task.is_completed %}Yes{% else %}No{% endif %}</p>
-  <p><strong>Type:</strong> {{ task.task_type }}</p>
+  <div class="section section-md">
+    <div class="container">
+      <div class="row mb-5 mb-lg-5">
+        <div class="col-lg-12 col-sm-6">
+          <span class="h5">{{ task.name }}    <a href="{% url 'task-manager:task-list' %}" class="btn btn-outline-success link-to-page">
+           Go back
+          </a></span>
+          <p>{{ task.description }}</p>
+          <p><strong>Deadline:</strong> {{ task.deadline }}</p>
+          <p><strong>Priority:</strong> {{ task.priority }}</p>
+          <p><strong>Completed:</strong> {% if task.is_completed %}Yes{% else %}No{% endif %}</p>
+          <p><strong>Type:</strong> {{ task.task_type }}</p>
 
-  <div class="ml-3">
-    <h4>Workers</h4>
-    {% for assignee in task.assignees.all %}
-      {{ assignee.username }}/
-    {% empty %}
-      <p>No assignee assigned!</p>
-    {% endfor %}
+          <div class="ml-3">
+            <h4>Workers</h4>
+            {% for assignee in task.assignees.all %}
+              {{ assignee.username }}/
+            {% empty %}
+              <p>No assignee assigned!</p>
+            {% endfor %}
+          </div>
+
+        </div>
+      </div>
+    </div>
   </div>
 {% endblock %}

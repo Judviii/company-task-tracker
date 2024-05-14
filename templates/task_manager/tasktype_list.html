@@ -1,30 +1,44 @@
 {% extends "base.html" %}
-
 {% block content %}
-  <h1>
-    Task type List
-    <a href="{% url 'task-manager:task-type-create' %}" class="btn btn-primary link-to-page">
-      Create
-    </a>
-  </h1>
-
-  {% include "task_manager/search_form.html" %}
-
-  {% if task_type_list %}
-    <ul>
-      {% for task_type in task_type_list %}
-        <li><a href="{% url 'task-manager:task-type-detail' pk=task_type.id %}">
+<!-- End of Hero -->
+<div class="section section-md">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-12">
+        <div class="mb-4">
+          <span class="h5">Task type table     <a href="{% url 'task-manager:task-type-create' %}" class="btn btn-outline-success link-to-page">
+           Create
+    </a></span>
+        </div>
+        {% include "task_manager/search_form.html" %}
+        <div class="mb-5">
+          {% if task_type_list %}
+          <table class="table">
+            <tr>
+              <th scope="col">Task types</th>
+            </tr>
+            {% for task_type in task_type_list %}
+            <tr>
+                <td>
+                  <a href="{% url 'task-manager:task-type-detail' pk=task_type.id %}">
           {{ task_type.name }}</a>
-          <a href="{% url 'task-manager:task-type-update' pk=task_type.id %}">
-            🔄
+          <a href="{% url 'task-manager:task-type-update' pk=task_type.id %}" class="badge bg-tertiary">
+            update
           </a>
-          <a href="{% url 'task-manager:task-type-delete' pk=task_type.id %}">
-            🚫
+          <a href="{% url 'task-manager:task-type-delete' pk=task_type.id %}" class="badge bg-danger">
+            delete
           </a>
-        </li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    No task types provided
-  {% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+          </table>
+          {% include "includes/pagination.html" %}
+          {% else %}
+          No task types provided
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
