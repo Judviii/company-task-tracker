@@ -1,16 +1,3 @@
-body {
-    margin-top: 20px;
-}
-
-ul {
-    padding-left: 0;
-    list-style-type: none;
-}
-
-li {
-    margin-left: 0;
-}
-
 .priority-cell {
   font-weight: bold;
 }
@@ -30,4 +17,3 @@ li {
 .priority-low {
   color: green;
 }
-
