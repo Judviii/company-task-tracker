@@ -11,7 +11,7 @@ from .views import (
     TaskDeleteView,
     TaskCreateView,
     TaskDetailView,
-    toggle_assign_to_task,
+    ToggleAssignToTaskView,
     TaskTypeListView,
     TaskTypeCreateView,
     TaskTypeDetailView,
@@ -55,7 +55,7 @@ urlpatterns = [
     ),
     path(
         "tasks/<int:pk>/toggle-assign/",
-        toggle_assign_to_task,
+        ToggleAssignToTaskView.as_view(),
         name="task-toggle-assign"
     ),
     path("task-type/", TaskTypeListView.as_view(), name="task-type-list"),
