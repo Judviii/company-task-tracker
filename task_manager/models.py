@@ -69,27 +69,16 @@ class Worker(AbstractUser):
     def get_absolute_url(self):
         return reverse("task-manager:worker-detail", kwargs={"pk": self.pk})
 
-    def get_default_permissions(self) -> list[Permission]:
-        default_permissions = [
-            Permission.objects.get(codename="add_task"),
-            Permission.objects.get(codename="change_task"),
-            Permission.objects.get(codename="delete_task"),
-            Permission.objects.get(codename="view_task"),
-            Permission.objects.get(codename="add_position"),
-            Permission.objects.get(codename="change_position"),
-            Permission.objects.get(codename="delete_position"),
-            Permission.objects.get(codename="view_position"),
-            Permission.objects.get(codename="add_tasktype"),
-            Permission.objects.get(codename="change_tasktype"),
-            Permission.objects.get(codename="delete_tasktype"),
-            Permission.objects.get(codename="view_tasktype"),
-            Permission.objects.get(codename="add_worker"),
-            Permission.objects.get(codename="change_worker"),
-            Permission.objects.get(codename="delete_worker"),
-            Permission.objects.get(codename="view_worker"),
+    def get_default_permissions(self) -> Permission:
+        codenames = [
+            "add_task", "change_task", "delete_task", "view_task",
+            "add_position", "change_position", "delete_position",
+            "view_position", "add_tasktype", "change_tasktype",
+            "delete_tasktype", "view_tasktype", "add_worker",
+            "change_worker", "delete_worker", "view_worker",
         ]
-
-        return default_permissions
+        permissions = Permission.objects.filter(codename__in=codenames)
+        return permissions
 
     def __str__(self):
         return (

@@ -79,67 +79,15 @@ class WorkerModelTests(TestCase):
         )
         default_permissions = worker.get_default_permissions()
 
-        self.assertIn(
-            Permission.objects.get(codename="add_task"),
-            default_permissions
-        )
-        self.assertIn(Permission.objects.get(
-            codename="change_task"),
-            default_permissions
-        )
-        self.assertIn(Permission.objects.get(
-            codename="delete_task"),
-            default_permissions
-        )
-        self.assertIn(Permission.objects.get(
-            codename="view_task"),
-            default_permissions
-        )
-        self.assertIn(Permission.objects.get(
-            codename="add_position"),
-            default_permissions
-        )
-        self.assertIn(Permission.objects.get(
-            codename="change_position"),
-            default_permissions
-        )
-        self.assertIn(Permission.objects.get(
-            codename="delete_position"),
-            default_permissions
-        )
-        self.assertIn(Permission.objects.get(
-            codename="view_position"),
-            default_permissions
-        )
-        self.assertIn(Permission.objects.get(
-            codename="add_tasktype"),
-            default_permissions
-        )
-        self.assertIn(Permission.objects.get(
-            codename="change_tasktype"),
-            default_permissions
-        )
-        self.assertIn(Permission.objects.get(
-            codename="delete_tasktype"),
-            default_permissions
-        )
-        self.assertIn(Permission.objects.get(
-            codename="view_tasktype"),
-            default_permissions
-        )
-        self.assertIn(Permission.objects.get(
-            codename="add_worker"),
-            default_permissions
-        )
-        self.assertIn(Permission.objects.get(
-            codename="change_worker"),
-            default_permissions
-        )
-        self.assertIn(Permission.objects.get(
-            codename="delete_worker"),
-            default_permissions
-        )
-        self.assertIn(Permission.objects.get(
-            codename="view_worker"),
-            default_permissions
-        )
+        expected_codenames = [
+            "add_task", "change_task", "delete_task", "view_task",
+            "add_position", "change_position", "delete_position",
+            "view_position", "add_tasktype", "change_tasktype",
+            "delete_tasktype", "view_tasktype", "add_worker",
+            "change_worker", "delete_worker", "view_worker",
+        ]
+
+        for codename in expected_codenames:
+            self.assertIn(Permission.objects.get(codename=codename),
+                          default_permissions,
+                          msg=f"Missing permission: {codename}")
