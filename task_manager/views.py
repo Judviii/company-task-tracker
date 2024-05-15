@@ -205,10 +205,10 @@ class PositionDeleteView(LoginRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy("task-manager:position-list")
 
 
-class ToggleAssignToTaskView(View):
-    def get(self, request, pk):
-        task = get_object_or_404(Task, id=pk)
-        worker = get_object_or_404(Worker, id=request.user.id)
+class ToggleAssignToTaskView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        worker = Worker.objects.get(id=request.user.id)
+        task = Task.objects.get(id=pk)
         if task.assignees.filter(id=worker.id).exists():
             task.assignees.remove(worker)
         else:
