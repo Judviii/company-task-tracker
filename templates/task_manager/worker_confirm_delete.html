@@ -1,13 +1,20 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>Delete {{ worker.username }}?</h1>
-  <a class="btn btn-success" href="{% url 'task-manager:worker-detail' pk=worker.id %}">
-    Cancel
-  </a>
-  <form action="" method="post">
-    {% csrf_token %}
-
-    <input type="submit" value="Yes" class="btn btn-danger">
-  </form>
+  <div class="section section-md">
+    <div class="container">
+      <div class="row mb-5 mb-lg-5">
+        <div class="col-lg-4 col-sm-6">
+          <h1>Delete {{ worker.username }}?</h1>
+          <a class="btn btn-outline-success" href="{% url 'task-manager:worker-detail' pk=worker.id %}">
+            Cancel
+          </a>
+          <form action="" method="post">
+            {% csrf_token %}
+            <input type="submit" value="Yes, delete" class="btn btn-outline-danger">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}

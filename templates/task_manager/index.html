@@ -1,50 +1,56 @@
 {% extends "base.html" %}
+{% load static %}
 
 
 {% block content %}
-{% if user.is_authenticated %}
-  <h1>
-    Username: {{ user.get_username }}
-  </h1>
-  <a href="{% url 'task-manager:index' %}" class="btn btn-secondary">
-      Go back
-    </a>
-  <p><strong>First name:</strong> {{ user.first_name }}</p>
-  <p><strong>Last name:</strong> {{ user.last_name }}</p>
-  <p><strong>Position:</strong> {{ user.position }}</p>
+    <section class="section-header overflow-hidden pt-7 pt-lg-8 pb-9 pb-lg-12 bg-primary text-white">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 text-center">
+          <div class="bootstrap-big-icon d-none d-lg-block">
+            <svg xmlns="http://www.w3.org/2000/svg" width="700" height="622" class="d-block my-1" viewBox="0 0 118 94"
+              role="img">
+              <title>Bootstrap</title>
+              <path fill-rule="evenodd" clip-rule="evenodd"
+                d="M24.509 0c-6.733 0-11.715 5.893-11.492 12.284.214 6.14-.064 14.092-2.066 20.577C8.943 39.365 5.547 43.485 0 44.014v5.972c5.547.529 8.943 4.649 10.951 11.153 2.002 6.485 2.28 14.437 2.066 20.577C12.794 88.106 17.776 94 24.51 94H93.5c6.733 0 11.714-5.893 11.491-12.284-.214-6.14.064-14.092 2.066-20.577 2.009-6.504 5.396-10.624 10.943-11.153v-5.972c-5.547-.529-8.934-4.649-10.943-11.153-2.002-6.484-2.28-14.437-2.066-20.577C105.214 5.894 100.233 0 93.5 0H24.508zM80 57.863C80 66.663 73.436 72 62.543 72H44a2 2 0 01-2-2V24a2 2 0 012-2h18.437c9.083 0 15.044 4.92 15.044 12.474 0 5.302-4.01 10.049-9.119 10.88v.277C75.317 46.394 80 51.21 80 57.863zM60.521 28.34H49.948v14.934h8.905c6.884 0 10.68-2.772 10.68-7.727 0-4.643-3.264-7.207-9.012-7.207zM49.948 49.2v16.458H60.91c7.167 0 10.964-2.876 10.964-8.281 0-5.406-3.903-8.178-11.425-8.178H49.948z"
+                fill="currentColor"></path>
+            </svg>
+          </div>
+          <h1 class="fw-bolder display-2">Task Tracker Service</h1>
+          <h2 class="lead fw-normal text-muted mb-4 px-lg-10">
+            "Tracking your tasks, powering your productivity"
+          </h2>
+        <h3 class="lead fw-normal text-muted mb-4 px-lg-10">
+          Welcome to Task Tracker Service, specified for IT company.
+        </h3>
+          <!-- Button Modal -->
+          {% if user.is_authenticated %}
+            <div class="d-flex justify-content-center align-items-center mb-5">
+            <a href="{% url 'task_manager:worker-detail' pk=user.pk %}" class="btn btn-tertiary mb-3 mt-2 me-2 me-md-3 animate-up-2"><span
+                class="fas fa-th-large me-2"></span> <span class="d-none d-md-inline">See your task
+                </span> <span class="d-md-none">See your task {{ user.get_username }}</span></a>
+          </div>
+          {% else %}
+          <div class="d-flex justify-content-center align-items-center mb-5">
+            <a href="{% url 'login' %}" class="btn btn-tertiary mb-3 mt-2 me-2 me-md-3 animate-up-2"><span
+                class="fas fa-th-large me-2"></span> <span class="d-none d-md-inline">Please login
+                </span> <span class="d-md-none">Login</span></a>
+          </div>
+          {% endif %}
+          <div class="d-flex justify-content-center flex-column mb-6 mb-lg-5">
+              <img src="{% static 'assets/img/themesberg.svg' %}" class="d-block mx-auto mb-3" height="25" width="25"
+                alt="Themesberg Logo">
+              <span class="text-muted font-small"> 
+                Task waiting for you, to be completed {{ num_tasks }} / {{ not_completed_tasks_count }}
+              </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <figure class="position-absolute bottom-0 left-0 w-100 d-none d-md-block mb-n2"><svg class="fill-white"
+        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3000 185.4">
+        <path d="M3000,0v185.4H0V0c496.4,115.6,996.4,173.4,1500,173.4S2503.6,115.6,3000,0z"></path>
+      </svg></figure>
+  </section>
 
-  <div class="ml-3">
-    <h4>Tasks</h4>
-
-    {% for task in user.workers.all %}
-      <hr>
-      <p><strong>Name:</strong> {{ task.name }}</p>
-      <p><strong>Description:</strong> {{ task.description }}</p>
-      <p><strong>Deadline:</strong> {{ task.deadline }}</p>
-      <p><strong>Priority:</strong> {{ task.get_priority_display }}</p>
-      <p><strong>Completed:</strong> {% if task.is_completed %}Yes{% else %}No{% endif %}</p>
-      <p><strong>Type:</strong> {{ task.task_type }}</p>
-      <p><strong>Assignees:</strong> 
-        {% for assignee in task.assignees.all %}
-          {{ assignee.username }}/
-        {% endfor %}
-      </p>
-    {% empty %}
-      <p>No tasks assigned!</p>
-    {% endfor %}
-  </div>
-<li>
-  <a href="{% url 'task_manager:worker-detail' pk=user.pk %}"> See your task</a>
-</li>
-{% else %}
-<h1>Task Tracker Service</h1>
-<p>Welcome to Task Tracker Service, specified for IT company</p>
-<h2>Task waiting for you, to be completed</h2>
-<ul>
-  <li><strong>Task:</strong> {{ num_tasks }}</li>
-  <li><strong>Not comp Task:</strong> {{ not_completed_tasks_count }}</li>
-</ul>
-Please login our service to start work
-<li><a href="{% url 'login' %}">Login</a></li>
-{% endif %}
 {% endblock %}

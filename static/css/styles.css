@@ -1,3 +1,19 @@
-body {
-    margin-top: 20px;
+.priority-cell {
+  font-weight: bold;
+}
+
+.priority-urgent {
+  color: red;
+}
+
+.priority-important {
+  color: orange;
+}
+
+.priority-normal {
+  color: blue;
+}
+
+.priority-low {
+  color: green;
 }

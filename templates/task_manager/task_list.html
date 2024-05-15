@@ -1,73 +1,87 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>
-    Task list
-    <a href="{% url 'task-manager:task-create' %}" class="btn btn-primary link-to-page">
-      Create
-    </a>
-  </h1>
-  
-  {% include "task_manager/search_form.html" %}
-  
-  {% if task_list %}
-    <table class="table">
-      <tr>
-        <th>Title</th>
-        <th>Description</th>
-        <th>Deadline</th>
-        <th>Status</th>
-        <th>Priority</th>
-        <th>Type</th>
-        <th>Assignees</th>
-        <th>Update</th>
-        <th>Delete</th>
-      </tr>
-
-      {% for task in task_list %}
-        <tr>
-          <td>
-            <a href="{% url 'task-manager:task-detail' pk=task.id %}">{{ task.name }}</a>
-          </td>
-          <td>
-            {{ task.description }}
-          </td>
-          <td>
-            {{ task.deadline }}
-          </td>
-          <td>
-            {{ task.is_completed }}
-          </td>
-          <td>
-            {{ task.priority }}
-          </td>
-          <td>
-            {{ task.task_type.name }}
-          </td>
-          <td>
-            <ul>
-              {% for worker in task.assignees.all %}
-                <li><a href="{% url 'task-manager:worker-detail' pk=worker.id %}">
-                  {{ worker.first_name }} {{ worker.last_name }} {{ worker.position }}
-                </a></li>
-              {% endfor %}
-            </ul>
-          </td>
-          <td>
-            <a href="{% url 'task-manager:task-update' pk=task.id %}" class="btn btn-primary link-to-page">
-              update
-            </a>
-          </td>
-          <td>
-            <a href="{% url 'task-manager:task-delete' pk=task.id %}" class="btn btn-primary link-to-page">
-              delete
-            </a>
-          </td>
-        </tr>
-      {% endfor %}
-    </table>
-
-  {% else %}
-    <p>There are no task in the service.</p>
+    <div class="section section-md">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-14">
+            <div class="mb-4">
+          <span class="h5">Tasks     <a href="{% url 'task-manager:task-create' %}"
+                                        class="btn btn-outline-success link-to-page">
+           Create
+    </a></span>
+            </div>
+            {% include "task_manager/search_form.html" %}
+            <div class="mb-4">
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Deadline</th>
+                    <th>Status</th>
+                    <th>Priority</th>
+                    <th>Type</th>
+                    <th>Assignees</th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {% if task_list %}
+                  {% for task in task_list %}
+                    <tr>
+                      <td>
+                        <a href="{% url 'task-manager:task-detail' pk=task.id %}">{{ task.name }}</a>
+                      </td>
+                      <td>
+                        {{ task.description }}
+                      </td>
+                      <td>
+                        {{ task.deadline }}
+                      </td>
+                      <td>
+                        {% if task.is_completed %}
+                          Completed
+                        {% else %}
+                          In process
+                        {% endif %}
+                      </td>
+                      <td class="priority-{{ task.priority }}">
+                        {{ task.priority }}
+                      </td>
+                      <td>
+                        {{ task.task_type.name }}
+                      </td>
+                      <td>
+                        <ul>
+                          {% for worker in task.assignees.all %}
+                            <li><a href="{% url 'task-manager:worker-detail' pk=worker.id %}">
+                              {{ worker.first_name }} {{ worker.last_name }}
+                            </a>{% if user == worker %} (Me){% endif %}</li>
+                          {% endfor %}
+                        </ul>
+                      </td>
+                      <td>
+                        {% include "task_manager/task_toggle_assign_form.html" %}
+                      </td>
+                      <td>
+                        <a href="{% url 'task-manager:task-update' pk=task.id %}" class="badge bg-tertiary">
+                          update</a>
+                        <a href="{% url 'task-manager:task-delete' pk=task.id %}" class="badge bg-danger">
+                          delete</a>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+                {% include "includes/pagination.html" %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   {% endif %}
 {% endblock %}
