@@ -1,0 +1,12 @@
+<form method="post" action="{% url 'task_manager:task-toggle-assign' pk=task.id %}">
+  {% csrf_token %}
+  {% if user in task.assignees.all %}
+    <button type="submit" class="badge bg-gradient-danger link-to-page">
+      Delete me from this task
+    </button>
+  {% else %}
+    <button type="submit" class="badge bg-gradient-success link-to-page">
+      Assign me to this task
+    </button>
+  {% endif %}
+</form>
