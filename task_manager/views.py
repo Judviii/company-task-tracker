@@ -1,6 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic, View
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -209,8 +208,15 @@ class ToggleAssignToTaskView(LoginRequiredMixin, View):
     def post(self, request, pk):
         worker = Worker.objects.get(id=request.user.id)
         task = Task.objects.get(id=pk)
+
         if task.assignees.filter(id=worker.id).exists():
             task.assignees.remove(worker)
         else:
             task.assignees.add(worker)
-        return HttpResponseRedirect(reverse_lazy("task_manager:task-list"))
+
+        previous_page_referer = request.META.get('HTTP_REFERER')
+
+        if previous_page_referer:
+            return redirect(previous_page_referer)
+
+        return redirect(reverse_lazy("task_manager:task-list"))
