@@ -59,11 +59,13 @@ class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         worker = self.get_object()
-        completed_tasks_count = worker.workers.filter(is_completed=True).count()
+        completed_tasks_count = worker.workers.filter(
+            is_completed=True
+        ).count()
         in_process_tasks_count = worker.workers.filter(
             is_completed=False).count()
-        context['completed_tasks_count'] = completed_tasks_count
-        context['in_process_tasks_count'] = in_process_tasks_count
+        context["completed_tasks_count"] = completed_tasks_count
+        context["in_process_tasks_count"] = in_process_tasks_count
         return context
 
 
@@ -214,7 +216,7 @@ class ToggleAssignToTaskView(LoginRequiredMixin, View):
         else:
             task.assignees.add(worker)
 
-        previous_page_referer = request.META.get('HTTP_REFERER')
+        previous_page_referer = request.META.get("HTTP_REFERER")
 
         if previous_page_referer:
             return redirect(previous_page_referer)
