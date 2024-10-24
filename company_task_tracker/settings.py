@@ -24,7 +24,6 @@ SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
 
 # To run it locally, please use this variable:
 # SECRET_KEY = "django-insecure-0(njc*t7hc-ezawxtqanzfkykpo8&s#(@hs316%f8^ny0g3(jh"
-#
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -41,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "widget_tweaks",
     "crispy_forms",
     "task_manager",
 ]
@@ -96,16 +96,20 @@ DATABASES["default"].update(db_from_env)
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "NAME": "django.contrib.auth.password_validation."
+                "UserAttributeSimilarityValidator",
     },
     {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+        "NAME": "django.contrib.auth.password_validation."
+                "MinimumLengthValidator",
     },
     {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+        "NAME": "django.contrib.auth.password_validation."
+                "CommonPasswordValidator",
     },
     {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+        "NAME": "django.contrib.auth.password_validation."
+                "NumericPasswordValidator",
     },
 ]
 
