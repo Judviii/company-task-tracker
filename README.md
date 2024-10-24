@@ -6,17 +6,35 @@ Task Tracker Service, specified for IT company.
 [ Company task tracker project deploy to Render](https://company-task-tracker.onrender.com)
 
 ## Installation
+### Prerequisites
 
-Python3 must be already installed
+Before you can run this project, make sure you have the following installed:
 
+- Python 3.11 or higher
+- Django 4.1
+- pip (Python package installer)
+
+### Running the app with Python
 ```shell
-git clone 
+git clone https://github.com/Judviii/company-task-tracker.git
 cd company_task_tracker
+
+# on macOS
+python3 -m venv venv
+source venv/bin/activate
+# on Windows
 python -m venv venv
-source venv/Scripts/activate
+venv\Scripts\activate
+
 pip install -r requirements.txt
+# Change the SECRET_KEY variable in settings.py 
+# to run it locally.
 python manage.py migrate
+python manage.py createsuperuser
 python manage.py runserver # Starts Django server
+
+(App will be available at http://127.0.0.1:8000/)
+python manage.py test # Run test
 ```
 
 ## Features
